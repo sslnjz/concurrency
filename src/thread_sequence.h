@@ -1,0 +1,88 @@
+#ifndef THREAD_SEQUENCE_H
+#define THREAD_SEQUENCE_H
+
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <execution>
+#include <vector>
+#include <algorithm>
+#include <functional>
+
+namespace concurrency {
+
+   /**
+   **  Aim to solve the problem of multiple threads printing natural numbers in order.
+   **  @Usage:
+   **        thread_sequence seq;
+   **        seq.start(10, 3);
+   **
+   **        After runing, the consolt will print like following:
+   **           Thread 1: 1
+   **           Thread 2: 2
+   **           Thread 3: 3
+   **           Thread 1: 4
+   **           Thread 2: 5
+   **           Thread 3: 6
+   **           Thread 1: 7
+   **           Thread 2: 8
+   **           Thread 3: 9
+   **           Thread 1: 10
+   **  @parameter:
+   **        number_of_thread   : The number of threads which will determine how much threads will join in the task
+   **        max_number_of_print: The maximum of printed natural numbers, the range is [1, print_max]
+   **/
+	class thread_sequence
+	{
+	public:
+		thread_sequence() 
+			:  _print_seq(1)
+			, _index(1) 
+		{
+		}
+
+      void start(const int number_of_thread, const int max_number_of_print)
+      {
+         _thread_num = number_of_thread;
+         _print_max = max_number_of_print;
+
+         for (size_t i = 0; i < _thread_num; ++i)
+            _vector.emplace_back(std::thread(std::bind(&thread_sequence::sequence_print, this, i + 1)));
+         std::for_each(_vector.begin(), _vector.end(), std::mem_fn(&std::thread::join));
+      }
+
+
+   private:
+		void sequence_print(int index)
+		{
+			while (1)
+			{
+				std::unique_lock<std::mutex> lock(_mutex);
+				_condition.wait(lock, [&]() {return index == _index; });
+				_index = (index % _thread_num) + 1;
+				_condition.notify_all();
+
+            if (_print_seq <= _print_max)
+               std::cout << "Thread " << index << ": " << _print_seq++ << std::endl;
+            else
+               break;
+			}
+		}
+
+	private:
+		std::mutex _mutex;
+		std::condition_variable _condition;
+
+		int _thread_num;
+		int _print_seq;
+		int _index;
+		int _print_max;
+
+		std::vector<std::thread> _vector;
+	};
+}
+
+
+
+#endif // THREAD_SEQUENCE_H
