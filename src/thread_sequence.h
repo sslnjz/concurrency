@@ -16,7 +16,7 @@ namespace concurrency {
    **  Aim to solve the problem of multiple threads printing natural numbers in order.
    **  @Usage:
    **        thread_sequence seq;
-   **        seq.start(10, 3);
+   **        seq.start(3, 10);
    **
    **        After runing, the consolt will print like following:
    **           Thread 1: 1
@@ -52,17 +52,15 @@ namespace concurrency {
          std::for_each(_vector.begin(), _vector.end(), std::mem_fn(&std::thread::join));
       }
 
-
    private:
       void sequence_print(int index)
       {
-         while (1)
+         while (_print_seq <= _print_max)
          {
             std::unique_lock<std::mutex> lock(_mutex);
             _condition.wait(lock, [&]() {return index == _index; });
             _index = (index % _thread_num) + 1;
             
-
             if (_print_seq <= _print_max)
                std::cout << "Thread " << index << ": " << _print_seq++ << std::endl;
             else{ 
