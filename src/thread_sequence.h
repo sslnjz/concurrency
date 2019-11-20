@@ -33,14 +33,14 @@ namespace concurrency {
    **        number_of_thread   : The number of threads which will determine how much threads will join in the task
    **        max_number_of_print: The maximum of printed natural numbers, the range is [1, print_max]
    **/
-	class thread_sequence
-	{
-	public:
-		thread_sequence() 
-			:  _print_seq(1)
-			, _index(1) 
-		{
-		}
+   class thread_sequence
+   {
+   public:
+      thread_sequence() 
+         :  _print_seq(1)
+         , _index(1) 
+      {
+      }
 
       void start(const int number_of_thread, const int max_number_of_print)
       {
@@ -54,33 +54,36 @@ namespace concurrency {
 
 
    private:
-		void sequence_print(int index)
-		{
-			while (1)
-			{
-				std::unique_lock<std::mutex> lock(_mutex);
-				_condition.wait(lock, [&]() {return index == _index; });
-				_index = (index % _thread_num) + 1;
-				_condition.notify_all();
+      void sequence_print(int index)
+      {
+         while (1)
+         {
+            std::unique_lock<std::mutex> lock(_mutex);
+            _condition.wait(lock, [&]() {return index == _index; });
+            _index = (index % _thread_num) + 1;
+            
 
             if (_print_seq <= _print_max)
                std::cout << "Thread " << index << ": " << _print_seq++ << std::endl;
-            else
+            else{ 
+               _condition.notify_all();
                break;
-			}
-		}
+            }
+            _condition.notify_all();
+         }
+      }
 
-	private:
-		std::mutex _mutex;
-		std::condition_variable _condition;
+   private:
+      std::mutex _mutex;
+      std::condition_variable _condition;
 
-		int _thread_num;
-		int _print_seq;
-		int _index;
-		int _print_max;
+      int _thread_num;
+      int _print_seq;
+      int _index;
+      int _print_max;
 
-		std::vector<std::thread> _vector;
-	};
+      std::vector<std::thread> _vector;
+   };
 }
 
 
