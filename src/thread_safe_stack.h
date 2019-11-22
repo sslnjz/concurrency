@@ -2,6 +2,9 @@
 #include <exception>
 #include <stack>
 
+#ifndef CONCURRENCY_THREAD_SAFE_STACK_H
+#define CONCURRENCY_THREAD_SAFE_STACK_H
+
 namespace concurrency {
 
 	struct empty_stack_exception : std::exception {
@@ -63,3 +66,5 @@ namespace concurrency {
 	};
 
 }
+
+#endif //CONCURRENCY_THREAD_SAFE_STACK_H

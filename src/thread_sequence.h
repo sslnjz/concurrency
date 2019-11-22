@@ -2,8 +2,8 @@
 // Created by  on 2019-11-17.
 //
 
-#ifndef THREAD_SEQUENCE_H
-#define THREAD_SEQUENCE_H
+#ifndef CONCURRENCY_THREAD_SEQUENCE_H
+#define CONCURRENCY_THREAD_SEQUENCE_H
 
 #include <iostream>
 #include <thread>
@@ -89,4 +89,4 @@ namespace concurrency {
 
 
 
-#endif // THREAD_SEQUENCE_H
+#endif // CONCURRENCY_THREAD_SEQUENCE_H
