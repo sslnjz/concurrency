@@ -1,3 +1,7 @@
+//
+// Created by  on 2019-11-17.
+//
+
 #ifndef THREAD_SEQUENCE_H
 #define THREAD_SEQUENCE_H
 
@@ -5,7 +9,6 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-#include <execution>
 #include <vector>
 #include <algorithm>
 #include <functional>
