@@ -40,7 +40,7 @@ namespace concurrency {
    {
    public:
       thread_sequence() 
-         :  _print_seq(1)
+         :  _print_seq(0)
          , _index(1) 
       {
       }
@@ -64,8 +64,8 @@ namespace concurrency {
             _condition.wait(lock, [&]() {return index == _index; });
             _index = (index % _thread_num) + 1;
             
-            if (_print_seq <= _print_max)
-               std::cout << "Thread " << index << ": " << _print_seq++ << std::endl;
+            if (_print_seq < _print_max)
+               std::cout << "Thread " << index << ": " << ++_print_seq << std::endl;
             else{ 
                _condition.notify_all();
                break;
