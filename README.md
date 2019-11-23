@@ -1,12 +1,11 @@
-## C++1x Multiple thread usage
-***thread_pool***
->A class which will create a pool of thread, you can determine how much threads to create or determined by the hardware performance itself. The ***thread_pool*** class used new **c++1x** features and make it easy to use.
+## C++1x Multiple thread usage 
+***thread_pool***  
+>A class which will create a pool of thread, you can determine how much threads to create or determined by the hardware performance itself. The ***thread_pool*** class used new **c++1x** features and make it easy to use.   
 ```
 thread_pool pool(4);
 auto result = pool.thread_pool([](int process) { return process; }, 42);
 std::cout << result.get() << std::endl;
 ```
-
  ***thread_safe_queue***
 >A thread safe queue which used condition variables to try or wait to pop element of the queue.
 
