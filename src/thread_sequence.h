@@ -21,7 +21,7 @@ namespace concurrency {
    **        thread_sequence seq;
    **        seq.start(3, 10);
    **
-   **        After runing, the consolt will print like following:
+   **        After runing, the console will print like following:
    **           Thread 1: 1
    **           Thread 2: 2
    **           Thread 3: 3
