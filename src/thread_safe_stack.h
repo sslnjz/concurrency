@@ -5,7 +5,7 @@
 #ifndef CONCURRENCY_THREAD_SAFE_STACK_H
 #define CONCURRENCY_THREAD_SAFE_STACK_H
 
-namespace concurrency {
+namespace concurrencyx {
 
 	struct empty_stack_exception : std::exception {
 		const char *what() const noexcept override;

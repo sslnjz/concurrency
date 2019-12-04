@@ -8,7 +8,7 @@
 #include <mutex>
 #include <queue>
 
-namespace concurrency
+namespace concurrencyx
 {
     template <typename T>
     class thread_safe_queue

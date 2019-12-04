@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <functional>
 
-namespace concurrency {
+namespace concurrencyx {
 
    /**
    **  Aim to solve the problem of multiple threads printing natural numbers in order.
@@ -58,19 +58,22 @@ namespace concurrency {
    private:
       void sequence_print(int index)
       {
-         while (_print_seq <= _print_max)
+         while (1)
          {
             std::unique_lock<std::mutex> lock(_mutex);
             _condition.wait(lock, [&]() {return index == _index; });
             _index = (index % _thread_num) + 1;
             
             if (_print_seq < _print_max)
+            {
                std::cout << "Thread " << index << ": " << ++_print_seq << std::endl;
+               _condition.notify_all();
+            }
             else{ 
                _condition.notify_all();
                break;
             }
-            _condition.notify_all();
+            
          }
       }
 
