@@ -31,3 +31,5 @@ Thread 2: 8
 Thread 3: 9
 Thread 1: 10
 ```
+***high_resolution_timer***
+High resolution timer, Precision ms level.

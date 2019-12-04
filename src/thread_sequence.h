@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <functional>
 
-namespace concurrencyx {
+namespace concurrent {
 
    /**
    **  Aim to solve the problem of multiple threads printing natural numbers in order.

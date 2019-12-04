@@ -14,7 +14,7 @@
 #include <functional>
 #include <condition_variable>
 
-namespace concurrencyx
+namespace concurrent
 {
     class thread_pool
     {
