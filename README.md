@@ -38,7 +38,6 @@
     high_resolution_timer t;
     t.setInterval([&]() {
         printf("Frame:%d\n", std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp1).count());
-        ++frame;
         tp = std::chrono::high_resolution_clock::now();
         }, 10);
 
