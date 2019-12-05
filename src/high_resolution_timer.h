@@ -51,7 +51,7 @@ namespace concurrent {
 
         void sleep_for(int milliseconds)
         {
-            std::thread t([&]() {
+            std::thread t([=]() {
                 high_resolution_clock::time_point tp_start = high_resolution_clock::now();
                 while (!_clear.load(std::memory_order_seq_cst)) {
                     uint64_t duration = duration_cast<std::chrono::milliseconds>(high_resolution_clock::now() - tp_start).count();
