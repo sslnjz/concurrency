@@ -9,22 +9,31 @@ using std::chrono::milliseconds;
 using std::chrono::high_resolution_clock;
 using concurrent::high_resolution_timer;
 
-int main(int argc, char** argv)
-{
-   auto tp = high_resolution_clock::now();
+int main(int argc, char **argv) {
+    auto tp = high_resolution_clock::now();
+    auto tp1 = high_resolution_clock::now();
 
-   high_resolution_timer t;
-   auto tp1 = high_resolution_clock::now();
-   t.setInterval([&]() {
-      std::cout << duration_cast<milliseconds>(high_resolution_clock::now() - tp1).count() << " .ms" << std::endl;
-      tp1 = std::chrono::high_resolution_clock::now();
-      }, 1);
+    auto duration = [&](decltype(tp) t){
+        return duration_cast<milliseconds>(high_resolution_clock::now() - t).count();
+    };
 
-   std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //#1 interval
+    high_resolution_timer t;
+    t.setInterval([&]() {
+        printf("%lld ms\n", duration(tp1));
+        tp1 = high_resolution_clock::now();
+        }, 1000/ 100);
 
-   t.stop();
+    //#2 timeout
+    t.setTimeout([&] {
+        printf("---%lld ms\n", duration(tp));
+        }, 100);
 
-   std::cout << "Total:" <<duration_cast<milliseconds>(high_resolution_clock::now() - tp).count() << " .ms" << std::endl;
+    //#3 sleep
+    t.sleep_for(1001);
 
-   return 0;
+    t.stop();
+    printf("Total: %lld ms\n", duration(tp));
+
+    return 0;
 }

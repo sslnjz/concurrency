@@ -10,23 +10,23 @@
 #include <atomic>
 
 using std::chrono::duration_cast;
-using std::chrono::milliseconds;
 using std::chrono::high_resolution_clock;
 
 namespace concurrent {
-
     class high_resolution_timer {
     public:
-        template<typename Fun>
-        void setTimeout(Fun function, int delay) {
-            std::thread t([&, function, delay]() {
-                if (_clear.load(std::memory_order_seq_cst))
+        template<class F>
+        void setTimeout(F fun, int milliseconds) {
+            std::thread t([=]() {
+                if (_clear.load(std::memory_order_seq_cst)){
                     return;
+                }
+
                 high_resolution_clock::time_point tp_start = high_resolution_clock::now();
                 while (true) {
-                    uint64_t duration = duration_cast<milliseconds>(high_resolution_clock::now() - tp_start).count();
-                    if (duration >= delay) {
-                        function();
+                    uint64_t duration = duration_cast<std::chrono::milliseconds>(high_resolution_clock::now() - tp_start).count();
+                    if (duration >= milliseconds) {
+                        fun();
                         break;
                     }
                 }
@@ -34,19 +34,33 @@ namespace concurrent {
             t.detach();
         }
 
-        template<typename Fun>
-        void setInterval(Fun function, int interval) {
-            std::thread t([&, function, interval]() {
+        template<typename F>
+        void setInterval(F fun, int milliseconds) {
+            std::thread t([=]() {
                 high_resolution_clock::time_point tp_start = high_resolution_clock::now();
                 while (!_clear.load(std::memory_order_seq_cst)) {
-                    uint64_t duration = duration_cast<milliseconds>(high_resolution_clock::now() - tp_start).count();
-                    if (duration >= interval) {
-                        function();
+                    uint64_t duration = duration_cast<std::chrono::milliseconds>(high_resolution_clock::now() - tp_start).count();
+                    if (duration >= milliseconds) {
+                        fun();
                         tp_start = high_resolution_clock::now();
                     }
                 }
             });
             t.detach();
+        }
+
+        void sleep_for(int milliseconds)
+        {
+            std::thread t([&]() {
+                high_resolution_clock::time_point tp_start = high_resolution_clock::now();
+                while (!_clear.load(std::memory_order_seq_cst)) {
+                    uint64_t duration = duration_cast<std::chrono::milliseconds>(high_resolution_clock::now() - tp_start).count();
+                    if (duration >= milliseconds) {
+                        return;
+                    }
+                }
+            });
+            t.join();
         }
 
         void stop() {
