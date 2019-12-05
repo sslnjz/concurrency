@@ -36,8 +36,9 @@
 ```c++
     auto tp = std::chrono::high_resolution_clock::now();
     high_resolution_timer t;
-    t.setTimeout([&]() {
-        printf("%lld\n", std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp).count());
+    t.setInterval([&]() {
+        printf("Frame:%d\n", std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - tp1).count());
+        ++frame;
         tp = std::chrono::high_resolution_clock::now();
         }, 10);
 
@@ -46,6 +47,6 @@
 ```
 >Console print:
 ```text
-    100 ms
+    ---100 ms
     Total: 1010 ms
 ```
