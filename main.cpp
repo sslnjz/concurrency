@@ -9,7 +9,8 @@ using std::chrono::milliseconds;
 using std::chrono::high_resolution_clock;
 using concurrent::high_resolution_timer;
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     auto tp = high_resolution_clock::now();
     auto tp1 = high_resolution_clock::now();
 
@@ -22,7 +23,7 @@ int main(int argc, char **argv) {
     t.setInterval([&]() {
         printf("%lld ms\n", duration(tp1));
         tp1 = high_resolution_clock::now();
-        }, 1000/ 100);
+        }, 1000 / 100);
 
     //#2 timeout
     t.setTimeout([&] {
@@ -35,5 +36,8 @@ int main(int argc, char **argv) {
     t.stop();
     printf("Total: %lld ms\n", duration(tp));
 
-    return 0;
+    concurrent::thread_sequence ts;
+    ts.start(3, 60);
+
+    return EXIT_SUCCESS;
 }

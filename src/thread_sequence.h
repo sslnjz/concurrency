@@ -21,7 +21,7 @@ namespace concurrent {
    **        thread_sequence seq;
    **        seq.start(3, 10);
    **
-   **        After runing, the console will print like following:
+   **        After running, the console will print like following:
    **           Thread 1: 1
    **           Thread 2: 2
    **           Thread 3: 3
@@ -39,9 +39,9 @@ namespace concurrent {
    class thread_sequence
    {
    public:
-      thread_sequence() 
+      thread_sequence()
          :  _print_seq(0)
-         , _index(1) 
+         , _index(1)
       {
       }
 
@@ -58,7 +58,7 @@ namespace concurrent {
    private:
       void sequence_print(int index)
       {
-         while (1)
+         while (true)
          {
             std::unique_lock<std::mutex> lock(_mutex);
             _condition.wait(lock, [&]() {return index == _index; });
@@ -81,10 +81,10 @@ namespace concurrent {
       std::mutex _mutex;
       std::condition_variable _condition;
 
-      int _thread_num;
-      int _print_seq;
-      int _index;
-      int _print_max;
+      int _thread_num = 0;
+      int _print_seq  = 0;
+      int _index      = 1;
+      int _print_max  = 0;
 
       std::vector<std::thread> _vector;
    };
