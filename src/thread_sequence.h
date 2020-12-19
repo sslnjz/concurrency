@@ -17,7 +17,7 @@ namespace concurrent {
 
    /**
    **  Aim to solve the problem of multiple threads printing natural numbers in order.
-   **  @Usage:
+   **  @usage:
    **        thread_sequence seq;
    **        seq.start(3, 10);
    **
