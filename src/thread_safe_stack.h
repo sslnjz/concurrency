@@ -1,6 +1,7 @@
 #include <mutex>
 #include <exception>
 #include <stack>
+#include <memory>
 
 #ifndef CONCURRENCY_THREAD_SAFE_STACK_H
 #define CONCURRENCY_THREAD_SAFE_STACK_H

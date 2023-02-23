@@ -3,6 +3,8 @@
 #ifndef CONCURRENCY_MEMORY_POOL_H
 #define CONCURRENCY_MEMORY_POOL_H
 
+#include <cstddef>
+
 namespace concurrent
 {
 	class memory_pool
@@ -15,7 +17,6 @@ namespace concurrent
 		unsigned char*	_beginning_pool;		// Beginning of memory pool
 		unsigned char*	_next_free_block;		// Num of next free block
 
-
 	public:
 		memory_pool()
 		{
@@ -23,7 +24,7 @@ namespace concurrent
 			_block_size = 0;
 			_free_blocks_num = 0;
 			_initialized_num = 0;
-			_beginning_pool = NULL;
+			_beginning_pool = nullptr;
 			_next_free_block = 0;
 		}
 		~memory_pool() 
@@ -44,7 +45,7 @@ namespace concurrent
 		void destroypool()
 		{
 			delete[] _beginning_pool;
-			_beginning_pool = NULL;
+			_beginning_pool = nullptr;
 		}
 
 		unsigned char* addr_from_index(unsigned int i) const
@@ -56,6 +57,7 @@ namespace concurrent
 		{
 			return (((unsigned int)(p - _beginning_pool)) / _block_size);
 		}
+
 		void* allocate()
 		{
 			if (_initialized_num < _blocks_num)
@@ -64,7 +66,7 @@ namespace concurrent
 				*p = _initialized_num + 1;
 				_initialized_num++;
 			}
-			void* ret = NULL;
+			void* ret = nullptr;
 			if (_free_blocks_num > 0)
 			{
 				ret = (void*)_next_free_block;
@@ -75,7 +77,7 @@ namespace concurrent
 				}
 				else
 				{
-					_next_free_block = NULL;
+					_next_free_block = nullptr;
 				}
 			}
 			return ret;
@@ -83,7 +85,7 @@ namespace concurrent
 
 		void de_allocate(void* p)
 		{
-			if (_next_free_block != NULL)
+			if (_next_free_block != nullptr)
 			{
 				(*(unsigned int*)p) = index_from_addr(_next_free_block);
 				_next_free_block = (unsigned char*)p;

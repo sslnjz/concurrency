@@ -19,7 +19,7 @@ namespace concurrent
     class thread_pool
     {
     public:
-        thread_pool(size_t size) : _stop(false)
+        explicit thread_pool(size_t size) : _stop(false)
         {
             size_t count = size > std::thread::hardware_concurrency() ? std::thread::hardware_concurrency() : size;
 

@@ -15,9 +15,9 @@ History:
 #include <utility>
 #include <atomic>
 #include <queue>
-#include <condition_variable>
 #include <optional>
 #include <cassert>
+#include <condition_variable>
 
 namespace concurrent
 {
